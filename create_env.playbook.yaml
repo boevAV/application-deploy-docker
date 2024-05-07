@@ -61,12 +61,12 @@
       become: true
     
     - name: Display Docker status
-      shell: docker info
-      register: docker_info
+      shell: pip list
+      register: pip_info
       become: true
 
     - debug:
-        var: docker_info.stdout
+        var: pip_info.stdout
 
     - name: Copy directory project
       become: yes
