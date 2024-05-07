@@ -87,15 +87,6 @@
         src: "{{ daemon_json }}"
         dest: /etc/docker
 
-    - name: Read daemon.json file
-      ansible.builtin.slurp:
-        src: /etc/docker/daemon.json
-      register: daemon_json_contents
-
-    - name: Display daemon.json contents
-      debug:
-        msg: "{{ daemon_json_contents['content'] | b64decode }}"
-
     - name: Pull Docker image
       community.docker.docker_image:
         name: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot"
