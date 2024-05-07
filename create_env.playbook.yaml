@@ -62,6 +62,7 @@
     
     - name: Display Docker status
       command: docker info
+      become: true
 
     - name: Copy directory project
       become: yes
