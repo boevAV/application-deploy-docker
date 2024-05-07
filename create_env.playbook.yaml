@@ -61,8 +61,12 @@
       become: true
     
     - name: Display Docker status
-      command: docker info
+      shell: docker info
+      register: docker_info
       become: true
+
+    - debug:
+        var: docker_info.stdout
 
     - name: Copy directory project
       become: yes
