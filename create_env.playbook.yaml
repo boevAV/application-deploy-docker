@@ -60,10 +60,8 @@
         state: present
       become: true
     
-    - name: Install Docker Python library
-      pip:
-        name: docker
-        state: present
+    - name: Display Docker status
+      command: docker info
 
     - name: Copy directory project
       become: yes
