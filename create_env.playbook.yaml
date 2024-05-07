@@ -32,57 +32,57 @@
     daemon_json: "{{ daemon_conf | regex_replace('j2$', 'json') }}"
   tasks:
     - block:   
-     - name: Update apt package cache
-       apt:
-         update_cache: yes
+      - name: Update apt package cache
+        apt:
+          update_cache: yes
 
-     - name: Add key GPG Docker
-       apt_key:
-         url: https://download.docker.com/linux/ubuntu/gpg
-         state: present
+      - name: Add key GPG Docker
+        apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
 
-     - name: Add The Docker Repository
-       apt_repository:
-         repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
-         state: present
+      - name: Add The Docker Repository
+        apt_repository:
+          repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+          state: present
 
-     - name: Docker Installation
-       apt:
-         name: docker-ce
-         state: present
+      - name: Docker Installation
+        apt:
+          name: docker-ce
+          state: present
 
-     - name: Install python3-pip
-       apt:
-         name: python3-pip
-         state: present
+      - name: Install python3-pip
+        apt:
+          name: python3-pip
+          state: present
 
-     - name: Copy directory project
-       copy:
-         src: "{{ daemon_json }}"
-         dest: /etc/docker
+      - name: Copy directory project
+        copy:
+          src: "{{ daemon_json }}"
+          dest: /etc/docker
 
-     - name: Pull Docker image
-       docker_image:
-         name: 192.168.199.17:5001/w_bot/bot
-         source: pull
+      - name: Pull Docker image
+        docker_image:
+          name: 192.168.199.17:5001/w_bot/bot
+          source: pull
 
-     - name: Ensure project directory exists
-       file:
-         path: /home/ubuntu/project
-         state: directory
+      - name: Ensure project directory exists
+        file:
+          path: /home/ubuntu/project
+          state: directory
 
-     - name: Run Docker container
-       docker_container:
-         name: bot
-         image: 192.168.199.17:5001/w_bot/bot
-         state: started
-         restart_policy: always
-         volumes:
-           - "/home/ubuntu/project:/app"
+      - name: Run Docker container
+        docker_container:
+          name: bot
+          image: 192.168.199.17:5001/w_bot/bot
+          state: started
+          restart_policy: always
+          volumes:
+            - "/home/ubuntu/project:/app"
       
-  rescue:
-   - name: Clean up resources because of an error
-        terraform:
+      rescue:
+       - name: Clean up resources because of an error
+         terraform:
            project_path: "./tf"
            state: absent 
-        delegate_to: localhost
+         delegate_to: localhost
