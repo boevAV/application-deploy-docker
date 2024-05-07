@@ -41,6 +41,7 @@
         name: aptitude
         state: latest
         update_cache: true
+      become: true
 
     - name: Install required system packages
       apt:
@@ -54,26 +55,31 @@
           - python3-setuptools
         state: latest
         update_cache: true
+      become: true
         
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
+      become: true
 
     - name: Add Docker Repository
       apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu jammy stable
         state: present
+      become: true
 
     - name: Update apt and install docker-ce
       apt:
         name: docker-ce
         state: latest
         update_cache: true
-
+      become: true
+      
     - name: Install Docker Module for Python
       pip:
         name: docker
+      become: true
 
     - name: Copy directory project
       become: yes
