@@ -87,20 +87,14 @@
         src: "{{ daemon_json }}"
         dest: /etc/docker
 
-    - name: Run systemctl status docker.service
-      command: systemctl status docker.service
-      register: docker_status
-      become: true
+    - name: Read daemon.json file
+      ansible.builtin.slurp:
+        src: /etc/docker/daemon.json
+      register: daemon_json_contents
 
-    - debug:
-        var: docker_status.stdout_lines
-
-    - name: Start Docker service if it's not running
-      service:
-        name: docker
-        state: started
-      when: docker_status.rc != 0
-      become: true
+    - name: Display daemon.json contents
+      debug:
+        msg: "{{ daemon_json_contents['content'] | b64decode }}"
 
     - name: Pull Docker image
       community.docker.docker_image:
