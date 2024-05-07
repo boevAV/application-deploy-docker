@@ -83,7 +83,7 @@
 
     - name: Pull Docker image
       community.docker.docker_image:
-        name: {{ DOCKER_REGISTRY_IP }}/w_bot/bot
+        name: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot"
         source: pull
 
     - name: Ensure project directory exists
@@ -93,8 +93,8 @@
         
     - name: Create container
       community.docker.docker_container:
-        name: bot
-        image: {{ DOCKER_REGISTRY_IP }}/w_bot/bot
+        name: "bot"
+        image: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot"
         command: started
         state: present
       with_sequence: count=1
