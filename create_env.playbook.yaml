@@ -86,6 +86,12 @@
       copy:
         src: "{{ daemon_json }}"
         dest: /etc/docker
+        
+    - name: Start Docker Service
+      systemd:
+        name: docker
+        state: started
+      become: true
 
     - name: Pull Docker image
       community.docker.docker_image:
