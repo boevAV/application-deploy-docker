@@ -86,12 +86,6 @@
       copy:
         src: "{{ daemon_json }}"
         dest: /etc/docker
-        
-    - name: Start Docker Service
-      systemd:
-        name: docker
-        state: started
-      become: true
 
     - name: Run systemctl status docker.service
       command: systemctl status docker.service
