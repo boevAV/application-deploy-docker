@@ -93,6 +93,14 @@
         state: started
       become: true
 
+    - name: Run systemctl status docker.service
+      command: systemctl status docker.service
+      register: docker_status
+      become: true
+
+    - debug:
+        var: docker_status.stdout_lines
+
     - name: Pull Docker image
       community.docker.docker_image:
         name: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot"
