@@ -101,6 +101,13 @@
     - debug:
         var: docker_status.stdout_lines
 
+    - name: Start Docker service if it's not running
+      service:
+        name: docker
+        state: started
+      when: docker_status.rc != 0
+      become: true
+
     - name: Pull Docker image
       community.docker.docker_image:
         name: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot"
