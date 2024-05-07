@@ -91,6 +91,7 @@
       community.docker.docker_image:
         name: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot"
         source: pull
+      become: true
 
     - name: Ensure project directory exists
       file:
