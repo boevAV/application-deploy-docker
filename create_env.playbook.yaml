@@ -17,6 +17,14 @@
         ansible_ssh_private_key_file: ~/.ssh/id_rsa
         ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
 
+- name: Modify properties of the db
+  hosts: localhost
+  tasks:
+    - name: Modify docker conf from template
+      ansible.builtin.template:
+        src: "{{ daemon_conf }}"
+        dest: "{{ daemon_conf | regex_replace('j2$', 'json') }}"
+
 - name: Wait for SSH port to be available
   hosts: localhost
   connection: local
