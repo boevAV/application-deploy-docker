@@ -26,12 +26,32 @@ resource "openstack_networking_secgroup_v2" "sec_group" {
   name        = "w_bot_docker_sec_group2"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "sec_group_rule_ssh" {
+resource "openstack_networking_secgroup_rule_v2" "sec_group_ssh_rule" {
   direction         = "ingress"
   ethertype         = "IPv4"
   protocol          = "tcp"
-  port_range_min    = 1
-  port_range_max    = 20000
+  port_range_min    = 22
+  port_range_max    = 22
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = openstack_networking_secgroup_v2.sec_group.id
+}
+
+resource "openstack_networking_secgroup_rule_v2" "sec_group_http_rule" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 80
+  port_range_max    = 80
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = openstack_networking_secgroup_v2.sec_group.id
+}
+
+resource "openstack_networking_secgroup_rule_v2" "sec_group_https_rule" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 443
+  port_range_max    = 443
   remote_ip_prefix  = "0.0.0.0/0"
   security_group_id = openstack_networking_secgroup_v2.sec_group.id
 }
