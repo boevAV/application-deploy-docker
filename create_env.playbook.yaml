@@ -89,7 +89,7 @@
 
     - name: Pull Docker image
       community.docker.docker_image:
-        name: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot"
+        name: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot:latest"
         source: pull
       become: true
 
