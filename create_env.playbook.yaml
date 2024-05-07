@@ -36,42 +36,44 @@
         update_cache: yes
       become: true
 
-    - name: Add key GPG Docker
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+        
+    - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
-      become: true
 
-    - name: Add The Docker Repository
+    - name: Add Docker Repository
       apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        repo: deb https://download.docker.com/linux/ubuntu jammy stable
         state: present
-      become: true
 
-    - name: Docker Installation
+    - name: Update apt and install docker-ce
       apt:
         name: docker-ce
-        state: present
-      become: true
+        state: latest
+        update_cache: true
 
-    - name: Install python3-pip
-      apt:
-        name: python3-pip
-        state: present
-      become: true
-
-    - name: Install docker package using pip
+    - name: Install Docker Module for Python
       pip:
         name: docker
-        state: present
-    
-    - name: Display Docker status
-      shell: pip list
-      register: pip_info
-      become: true
-
-    - debug:
-        var: pip_info.stdout
 
     - name: Copy directory project
       become: yes
@@ -80,15 +82,22 @@
         dest: /etc/docker
 
     - name: Pull Docker image
-      become: yes
-      docker_image:
-        name: 192.168.199.17:5001/w_bot/bot
+      community.docker.docker_image:
+        name: {{ default_container_image }}/w_bot/bot
         source: pull
 
-    - name: Ensure project directory exists
+   - name: Ensure project directory exists
       file:
         path: /home/ubuntu/project
         state: directory
+    - name: Create container
+      community.docker.docker_container:
+        name: bot
+        image: {{ default_container_image }}/w_bot/bot
+        command: {{ default_container_command }}/
+        state: present
+      with_sequence: count={{ container_count }}
+
 
     - name: Run Docker container
       docker_container:
