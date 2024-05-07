@@ -72,6 +72,7 @@
         dest: /etc/docker
 
     - name: Pull Docker image
+      become: yes
       docker_image:
         name: 192.168.199.17:5001/w_bot/bot
         source: pull
