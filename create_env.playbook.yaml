@@ -83,27 +83,18 @@
 
     - name: Pull Docker image
       community.docker.docker_image:
-        name: {{ default_container_image }}/w_bot/bot
+        name: {{ DOCKER_REGISTRY_IP }}/w_bot/bot
         source: pull
 
-   - name: Ensure project directory exists
+    - name: Ensure project directory exists
       file:
         path: /home/ubuntu/project
         state: directory
+        
     - name: Create container
       community.docker.docker_container:
         name: bot
-        image: {{ default_container_image }}/w_bot/bot
-        command: {{ default_container_command }}/
+        image: {{ DOCKER_REGISTRY_IP }}/w_bot/bot
+        command: started
         state: present
-      with_sequence: count={{ container_count }}
-
-
-    - name: Run Docker container
-      docker_container:
-        name: bot
-        image: 192.168.199.17:5001/w_bot/bot
-        state: started
-        restart_policy: always
-        volumes:
-           - "/home/ubuntu/project:/app"
+      with_sequence: count=1
