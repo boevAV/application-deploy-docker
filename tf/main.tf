@@ -36,7 +36,7 @@ resource "openstack_networking_secgroup_rule_v2" "sec_group_rule_ssh" {
   security_group_id = openstack_networking_secgroup_v2.sec_group.id
 }
 
-resource "openstack_compute_instance_v2" "restaurant_finder_docker" {
+resource "openstack_compute_instance_v2" "w_bot_docker" {
   name              = "w_bot_docker"
   image_name        = var.image_name
   flavor_name       = var.flavor_name
