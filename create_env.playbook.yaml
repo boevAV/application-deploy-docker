@@ -109,7 +109,7 @@
     - name: Create container
       community.docker.docker_container:
         name: "bot"
-        image: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot"
+        image: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot:latest"
         command: started
         state: present
       with_sequence: count=1
