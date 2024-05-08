@@ -113,3 +113,4 @@
         command: started
         state: present
       with_sequence: count=1
+      become: true
