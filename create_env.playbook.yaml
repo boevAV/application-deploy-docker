@@ -95,22 +95,26 @@
         src: "{{ daemon_json }}"
         dest: /etc/docker
 
-    - name: Pull Docker image
-      community.docker.docker_image:
-        name: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot:latest"
-        source: pull
-      become: true
-
+    - name: Restart Docker service
+      ansible.builtin.service:
+        name: docker
+        state: restarted
+        
     - name: Ensure project directory exists
       file:
         path: /home/ubuntu/project
         state: directory
-        
+         
+    - name: Pull Docker image
+      community.docker.docker_image:
+        name: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot:latest"
+        source: pull
+      become: true   
+      
     - name: Create container
       community.docker.docker_container:
         name: "bot"
         image: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot:latest"
-        command: started
-        state: present
-      with_sequence: count=1
+        state: started
+        force_restart: true
       become: true
