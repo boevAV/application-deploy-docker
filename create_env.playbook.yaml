@@ -117,5 +117,5 @@
         name: "bot"
         image: "{{ DOCKER_REGISTRY_IP }}/w_bot/bot:latest"
         state: started
-        force_restart: true
+        recreate: yes
       become: true
